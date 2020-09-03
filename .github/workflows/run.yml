@@ -11,7 +11,7 @@ env:
   MIRROR_SCRIPT: ./create_mirror
   EM_SCRIPT_PATH: $HOME/elpa-mirror.el
   MIRROR_DIR: /tmp/elpa 
-  MIRROR_NAME: elpa
+  MIRROR_NAME: elpa.zip
   RELEASE_NAME: elpamirror
   EM_SCRIPT_URL: "https://raw.githubusercontent.com/\
   redguardtoo/\
