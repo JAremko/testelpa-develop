@@ -48,10 +48,7 @@ jobs:
       run: ${{ env.MIRROR_SCRIPT }}
 
     - name: Archive mirror
-      run: zip -r -j /tmp/elpa.zip ${{ env.MIRROR_DIR }}
-
-    - name: test
-      run: echo ${{ hashFiles('/tmp/elpa.zip') }}
+      run: zip -r -j ${{ env.GITHUB_WORKSPACE }}/elpa.zip ${{ env.MIRROR_DIR }}
 
     - name: Create release
       # Expected to fail if release with the same hash exists
@@ -61,7 +58,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: ${{ hashFiles('/tmp/elpa.zip') }}
+        tag_name: ${{ hashFiles('elpa.zip') }}
         release_name: ${{ env.RELEASE_NAME }}
         body: Spacemacs elpa mirror for testing
         draft: false
@@ -76,6 +73,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: /tmp/elpa.zip
+        asset_path: ${{ env.GITHUB_WORKSPACE }}/elpa.zip
         asset_name: ${{ env.MIRROR_NAME }}
         asset_content_type: application/zip
