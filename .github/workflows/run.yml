@@ -11,8 +11,7 @@ env:
   MIRROR_SCRIPT: ./create_mirror
   EM_SCRIPT_PATH: $HOME/elpa-mirror.el
   MIRROR_DIR: /tmp/elpa
-  MIRROR_FILE: /tmp/elpa.zip
-  MIRROR_NAME: elpa.zip
+  MIRROR_NAME: elpa-zip
   RELEASE_NAME: elpamirror
   EM_SCRIPT_URL: "https://raw.githubusercontent.com/\
   redguardtoo/\
@@ -49,17 +48,17 @@ jobs:
       run: ${{ env.MIRROR_SCRIPT }}
 
     - name: Archive mirror
-      run: zip -r -j ${{ env.MIRROR_FILE }} ${{ env.MIRROR_DIR }}
+      run: zip -r -j /tmp/elpa.zip ${{ env.MIRROR_DIR }}
 
     - name: Create release
       id: create_release
+      continue-on-error: true
       uses: actions/create-release@v1
       # Expected to fail if release with the same hash exists
-      continue-on-error: true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: ${{ hashFiles(env.MIRROR_FILE) }}
+        tag_name: ${{ hashFiles("/tmp/elpa.zip") }}
         release_name: ${{ env.RELEASE_NAME }}
         body: Spacemacs elpa mirror for testing
         draft: false
@@ -73,7 +72,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
+        tag_name: ${{ hashFiles("/tmp/elpa.zip") }}
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ${{ env.MIRROR_FILE }}
-        asset_name: ${{ env.elpa.zip }}
+        asset_path: /tmp/elpa.zip
+        asset_name: ${{ env.MIRROR_NAME }}
         asset_content_type: application/zip
