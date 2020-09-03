@@ -1,0 +1,57 @@
+name: Create mirror release
+
+on:
+  schedule:
+    - cron:  "*/15 * * * *"
+
+env:
+  SPACEMACS_REPO: syl20bnr/spacemacs
+  SPACEMACS_BRANCH: develop
+  SPACEMACS_DIR: spacemacs
+  MIRROR_SCRIPT: create_mirror
+  EM_SCRIPT_PATH: $HOME/elpa-mirror.el
+  MIRROR_DIR: /tmp/elpa
+  MIRROR_FILE: /tmp/elpa.zip
+  MIRROR_NAME: elpa.zip
+  EM_SCRIPT_URL: "https://raw.githubusercontent.com/\
+  redguardtoo/\
+  elpa-mirror/\
+  master/\
+  elpa-mirror.el"
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Install Emacs
+      uses: purcell/setup-emacs@master
+      with:
+        version: 27.1
+
+    - name: Download elpa-mirror.el
+      run: curl -o ${{ env.EM_SCRIPT_PATH }} ${{ env.EM_SCRIPT_URL }}
+
+    - uses: actions/checkout@v2
+
+    - name: checkout Spacemacs repo
+      uses: actions/checkout@v2
+      with:
+        repository: ${{ env.SPACEMACS_REPO }}
+        ref: ${{ env.SPACEMACS_BRANCH }}
+        path: ${{ env.SPACEMACS_DIR }}
+
+    - name: Create local mirror
+      run: ${{ env.MIRROR_SCRIPT }}
+
+    - name: Archive mirror
+      run: zip -r -j ${{ env.MIRROR_FILE }} ${{ env.MIRROR_DIR }}
+
+    - name: Update release
+      uses: johnwbyrd/update-release@v1
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        files: ${{ env.MIRROR_FILE }}
