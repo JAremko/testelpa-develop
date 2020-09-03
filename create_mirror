@@ -15,7 +15,7 @@ cp dotspacemacs.el ~/.sipacemacs
 
 mkdir -p "${MIRROR_DIR}"
 
-ln -s "${SPACEMACS_DIR}" ~/.emacs.d
+ln -s "${GITHUB_WORKSPACE}/${SPACEMACS_DIR}" "${HOME}/.emacs.d"
 
 emacs --batch \
       -l "${HOME}/.emacs.d/init.el" \
