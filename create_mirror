@@ -11,7 +11,7 @@
 ##
 ## License: GPLv3
 
-cp dotspacemacs.el ~/.sipacemacs
+cp dotspacemacs.el ~/.spacemacs
 
 mkdir -p "${MIRROR_DIR}"
 
