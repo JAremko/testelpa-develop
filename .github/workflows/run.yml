@@ -50,11 +50,14 @@ jobs:
     - name: Archive mirror
       run: zip -r -j /tmp/elpa.zip ${{ env.MIRROR_DIR }}
 
+    - name: test
+      run: echo ${{ hashFiles('/tmp/elpa.zip') }}
+
     - name: Create release
-      id: create_release
-      continue-on-error: true
-      uses: actions/create-release@v1
       # Expected to fail if release with the same hash exists
+      continue-on-error: true
+      id: create_release
+      uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
@@ -72,7 +75,6 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: ${{ hashFiles('/tmp/elpa.zip') }}
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: /tmp/elpa.zip
         asset_name: ${{ env.MIRROR_NAME }}
