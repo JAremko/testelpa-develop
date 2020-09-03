@@ -54,6 +54,8 @@ jobs:
     - name: Create release
       id: create_release
       uses: actions/create-release@v1
+      # Expected to fail if release with the same hash exists
+      continue-on-error: true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
@@ -64,7 +66,7 @@ jobs:
         prerelease: false
 
     - name: Upload Release Asset
-      # Expected to fail if release with the same hash exists
+      # Expected to fail if create_release faild
       continue-on-error: true
       id: upload-release-asset 
       uses: actions/upload-release-asset@v1
