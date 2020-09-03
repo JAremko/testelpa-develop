@@ -52,16 +52,16 @@ jobs:
       run: zip -r -j ${{ env.MIRROR_FILE }} ${{ env.MIRROR_DIR }}
 
     - name: Create release
-    id: create_release
-    uses: actions/create-release@v1
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    with:
-      tag_name: ${{ hashFiles(env.MIRROR_FILE) }}
-      release_name: ${{ env.RELEASE_NAME }}
-      body: Spacemacs elpa mirror for testing
-      draft: false
-      prerelease: false
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ hashFiles(env.MIRROR_FILE) }}
+        release_name: ${{ env.RELEASE_NAME }}
+        body: Spacemacs elpa mirror for testing
+        draft: false
+        prerelease: false
 
     - name: Upload Release Asset
       # Expected to fail if release with the same hash exists
