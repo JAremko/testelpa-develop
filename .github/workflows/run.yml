@@ -8,7 +8,7 @@ env:
   SPACEMACS_REPO: syl20bnr/spacemacs
   SPACEMACS_BRANCH: develop
   SPACEMACS_DIR: spacemacs
-  MIRROR_SCRIPT: create_mirror
+  MIRROR_SCRIPT: ./create_mirror
   EM_SCRIPT_PATH: $HOME/elpa-mirror.el
   MIRROR_DIR: /tmp/elpa
   MIRROR_FILE: /tmp/elpa.zip
