@@ -12,7 +12,7 @@ env:
   SPACEMACS_DIR: spacemacs
   MIRROR_SCRIPT: ./create_mirror
   EM_SCRIPT_PATH: $HOME/elpa-mirror.el
-  MIRROR_DIR: /tmp/elpa 
+  MIRROR_DIR: elpa_mirror
   MIRROR_NAME: elpa.zip
   RELEASE_NAME: elpamirror
   EM_SCRIPT_URL: "https://raw.githubusercontent.com/\
@@ -50,7 +50,7 @@ jobs:
       run: ${{ env.MIRROR_SCRIPT }}
 
     - name: Archive mirror
-      run: zip -r -j elpa.zip ${{ env.MIRROR_DIR }}
+      run: zip -r -j ${{ env.MIRROR_NAME }} ${{ env.MIRROR_DIR }}
 
     - name: Create release
       id: create_release
@@ -58,7 +58,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: ${{ hashFiles('elpa.zip') }}
+        tag_name: ${{ hashFiles('${MIRROR_DIR}/archive-contents') }}
         release_name: ${{ env.RELEASE_NAME }}
         body: Spacemacs elpa mirror for testing
         draft: false
@@ -71,6 +71,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: elpa.zip
+        asset_path: ${{ env.MIRROR_NAME }}
         asset_name: ${{ env.MIRROR_NAME }}
         asset_content_type: application/zip
