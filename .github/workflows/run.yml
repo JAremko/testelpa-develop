@@ -52,7 +52,10 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: ${{ hashFiles('testelpa/archive-contents') }}
+        # making hash from "testelpa/archive-contents" doesn't work
+        # too well because Spacemacs local packages get a new version
+        # with every build.
+        tag_name: ${{ hashFiles('spacemacs/elpa/**/*.el') }}
         release_name: testelpa
         body: Spacemacs elpa mirror for testing
         draft: false
