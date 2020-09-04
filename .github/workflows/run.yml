@@ -1,7 +1,7 @@
 name: Create mirror release
 
 on:
-  repository_dispatch:
+  workflow_dispatch:
   schedule:
     # Every 4 hours
     - cron:  "0 */4 * * *"
