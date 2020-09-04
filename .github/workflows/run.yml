@@ -46,16 +46,17 @@ jobs:
     - name: Archive mirror
       run: zip -r -j elpa.zip testelpa
 
+    - name: Get current date
+      id: date
+      run: echo "::set-output name=date::$(date +'%D %T')"
+
     - name: Create release
       id: create_release
       uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        # making hash from "testelpa/archive-contents" doesn't work
-        # too well because Spacemacs local packages get a new version
-        # with every build.
-        tag_name: ${{ hashFiles('spacemacs/elpa/**/*.el') }}
+        tag_name: date-${{ steps.date.outputs.date }}
         release_name: testelpa
         body: Spacemacs elpa mirror for testing
         draft: false
