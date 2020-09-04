@@ -13,12 +13,12 @@
 
 cp dotspacemacs.el ~/.spacemacs
 
-mkdir -p "${MIRROR_DIR}"
+mkdir -p "testelpa"
 
-ln -s "${GITHUB_WORKSPACE}/${SPACEMACS_DIR}" "${HOME}/.emacs.d"
+ln -s "${GITHUB_WORKSPACE}/spacemacs" "${HOME}/.emacs.d"
 
 emacs --batch \
       -l "${HOME}/.emacs.d/init.el" \
-      -l "${EM_SCRIPT_PATH}" \
-      --eval="(setq elpamr-default-output-directory \"${MIRROR_DIR}\")" \
+      -l "${HOME}/elpa-mirror.el" \
+      --eval="(setq elpamr-default-output-directory \"testelpa\")" \
       --eval="(elpamr-create-mirror-for-installed)"
