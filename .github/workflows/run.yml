@@ -9,6 +9,7 @@ on:
 env:
   SPACEMACS_REPO: syl20bnr/spacemacs
   SPACEMACS_BRANCH: develop
+  GITHUB_WORKSPACE: ${{ github.workspace }}
   EM_SCRIPT_URL: "https://raw.githubusercontent.com/\
   redguardtoo/\
   elpa-mirror/\
