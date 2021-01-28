@@ -25,16 +25,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Install Emacs
+      id: install_emacs
       uses: purcell/setup-emacs@master
       with:
         version: 27.1
 
     - name: Download elpa-mirror.el
+      id: download_elpa_mirror_script
       run: curl -o "${HOME}/elpa-mirror.el" ${{ env.EM_SCRIPT_URL }}
 
     - uses: actions/checkout@v2
 
     - name: checkout Spacemacs repo
+      id: checkout_spacemacs_repo
       uses: actions/checkout@v2
       with:
         repository: ${{ env.SPACEMACS_REPO }}
@@ -42,13 +45,15 @@ jobs:
         path: spacemacs
 
     - name: Create local mirror
+      id: create_local_mirror
       run: ./create_mirror
 
     - name: Archive mirror
+      id: archive_mirror
       run: zip -r -j elpa.zip testelpa
 
     - name: Get current date
-      id: date
+      id: get_current_date
       run: echo "::set-output name=date::$(date +'%s')"
 
     - name: Create release
@@ -64,7 +69,7 @@ jobs:
         prerelease: false
 
     - name: Delete old releases
-      id: delete-older-releases
+      id: delete_older_releases
       uses: dev-drprasad/delete-older-releases@v0.1.0
       with:
         repo: <owner>/<repoName> # defaults to current repo
@@ -73,7 +78,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Upload Release Asset
-      id: upload-release-asset 
+      id: upload_release_asset
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
