@@ -64,7 +64,8 @@ jobs:
         prerelease: false
 
     - name: Delete old releases
-    - uses: dev-drprasad/delete-older-releases@v0.1.0
+      id: delete-older-releases
+      uses: dev-drprasad/delete-older-releases@v0.1.0
       with:
         repo: <owner>/<repoName> # defaults to current repo
         keep_latest: 7
