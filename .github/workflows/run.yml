@@ -28,7 +28,7 @@ jobs:
       id: install_emacs
       uses: purcell/setup-emacs@master
       with:
-        version: 28.1
+        version: 28.2
 
     - name: Download elpa-mirror.el
       id: download_elpa_mirror_script
